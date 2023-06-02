@@ -1,0 +1,28 @@
+version: '4.2'
+services:
+  app_user:
+    container_name: app_user
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8001:8000
+    volumes:
+      - .:/app
+    command: 'php artisan serve --host=0.0.0.0'
+    depends_on:
+      - db_user
+
+  db_user:
+    container_name: db_user
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: user
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: laravel
+      MYSQL_ROOT_PASSWORD: laravel
+    volumes:
+      - ./storage/dbdata:/var/lib/mysql
+    ports:
+      - "33062:3306"
